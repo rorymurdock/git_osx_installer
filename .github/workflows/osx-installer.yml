@@ -21,7 +21,7 @@ env:
   # Enable a bit stricter compile flags
   DEVELOPER: 1
   # For the osx-installer build
-  OSX_VERSION: 10.6
+  OSX_VERSION: 10.11
   V: 1
 
 jobs:
