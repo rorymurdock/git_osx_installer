@@ -1,6 +1,12 @@
 name: Manual Build macOS installer
 
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Git release tag'     
+        required: true
+        default: ''
 
 env:
   GIT_REPOSITORY: "${{github.event.client_payload.repository}}"
@@ -30,12 +36,12 @@ jobs:
           brew link --force gettext
       - name: Clone git
         run: |
-          git clone -n "${GIT_REPOSITORY:-$FALLBACK_GIT_REPOSITORY}" git &&
+          git clone -n "${GIT_REPOSITORY:-$FALLBACK_GIT_REPOSITORY}" --branch ${{ github.event.inputs.tag }} git &&
           cd git &&
           if test -z "$GIT_REF"
           then
-            GIT_REF="$(git for-each-ref \
-              --sort=-taggerdate --count=1 --format='%(refname)' 'refs/tags/v[0-9]*')" &&
+            GIT_REF="refs/tags/+${{ github.event.inputs.tag }}" &&
+            print $GIT_REF &&
             test -n "$GIT_REF" ||
             { echo "No eligible tag found" >&2; exit 1; }
           fi &&
