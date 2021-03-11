@@ -62,6 +62,7 @@ jobs:
           test -n "$VERSION" ||
           die "Could not determine version!"
           export VERSION
+          echo "$VERSION >> $GITHUB_ENV
 
           ln -s git git-$VERSION
 
@@ -76,11 +77,6 @@ jobs:
           # make sure that .../usr/local/git/share/man/ exists
           sed -i .bak -e 's/\(tar .*-C \)\(.*\/share\/man\)$/mkdir -p \2 \&\& &/' Makefile ||
           die "Could not edit Makefile"
-
-          # For debugging:
-          #
-          # cat Makefile
-          # make vars
 
           PATH=/usr/local/bin:/System/Library/Frameworks:$PATH \
           make build/intel-universal-big-sur/git-$VERSION/osx-built-keychain ||
@@ -97,6 +93,20 @@ jobs:
         with:
           name: osx-installer
           path: osx-installer
+          
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v.$VERSION
+          release_name: Git $VERSION
+          body: |
+              # Notes
+              This is a version of Git created by GitHub Actions.
+          draft: false
+          prerelease: false
       - name: Upload Package Release Asset
         uses: actions/upload-release-asset@v1
         env:
