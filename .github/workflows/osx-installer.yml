@@ -4,7 +4,7 @@ on:
   repository_dispatch:
     types:
       - osx-installer
-  # push:
+  push:
 
 env:
   GIT_REPOSITORY: "${{github.event.client_payload.repository}}"
@@ -21,12 +21,12 @@ env:
   # Enable a bit stricter compile flags
   DEVELOPER: 1
   # For the osx-installer build
-  OSX_VERSION: 10.6
+  OSX_VERSION: 11.0
   V: 1
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-11.0
     steps:
       - uses: actions/checkout@v1
       - name: Install Git's dependencies
