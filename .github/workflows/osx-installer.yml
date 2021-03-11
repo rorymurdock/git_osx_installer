@@ -83,7 +83,7 @@ jobs:
           # make vars
 
           PATH=/usr/local/bin:/System/Library/Frameworks:$PATH \
-          make build/intel-universal-snow-leopard/git-$VERSION/osx-built-keychain ||
+          make build/intel-universal-big-sur/git-$VERSION/osx-built-keychain ||
           die "Build failed"
 
           PATH=/usr/local/bin:$PATH \
@@ -97,3 +97,21 @@ jobs:
         with:
           name: osx-installer
           path: osx-installer
+      - name: Upload Package Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./git-$VERSION-intel-universal-big-sur.pkg
+          asset_name: git-$VERSION-intel-universal-big-sur.pkg
+          asset_content_type: application/x-newton-compatible-pkg
+      - name: Upload DMG Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./git-$VERSION-intel-universal-big-sur.dmg
+          asset_name: git-$VERSION-intel-universal-big-sur.dmg
+          asset_content_type: application/x-apple-diskimage
