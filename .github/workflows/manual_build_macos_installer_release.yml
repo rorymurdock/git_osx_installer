@@ -30,15 +30,11 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Install Git's dependencies
-        run: |
-          brew install autoconf automake asciidoc docbook xmlto
-          brew link --force gettext
-      - name: Clone git
+      - name: Clone git repo
         run: |
           git clone -n "${GIT_REPOSITORY:-$FALLBACK_GIT_REPOSITORY}" git &&
-          git checkout ${{ github.event.inputs.tag }} &&
           cd git &&
+          git checkout ${{ github.event.inputs.tag }} &&
           if test -z "$GIT_REF"
           then
             GIT_REF="refs/tags/+${{ github.event.inputs.tag }}" &&
@@ -48,12 +44,16 @@ jobs:
           fi &&
           git fetch origin "$GIT_REF" &&
           git switch --detach FETCH_HEAD
-      - name: Build GIT-VERSION-FILE and .tar.gz files
+      - name: Install Make's dependencies
+        run: |
+          brew install autoconf automake asciidoc docbook xmlto
+          brew link --force gettext
+      - name: Compile git
         run: |
           set -x
           PATH=/usr/local/bin:$PATH \
           make -C git -j$(sysctl -n hw.physicalcpu) GIT-VERSION-FILE dist dist-doc
-      - name: Bundle .dmg
+      - name: Create DMG
         run: |
           die () {
             echo "$*" >&2
@@ -82,12 +82,11 @@ jobs:
           die "Build failed"
           mkdir osx-installer &&
           mv *.dmg disk-image/*.pkg osx-installer/
-      - name: Upload osx-installer artifacts
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v1
         with:
-          name: osx-installer
+          name: Git ${{env.VERSION}}
           path: osx-installer
-          
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
