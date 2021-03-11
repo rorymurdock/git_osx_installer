@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Install Git's dependencies
         run: |
-          pass
+          echo ""
       - name: Clone git
         run: |
           git clone -n "${GIT_REPOSITORY:-$FALLBACK_GIT_REPOSITORY}" git &&
