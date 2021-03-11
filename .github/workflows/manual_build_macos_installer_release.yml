@@ -38,9 +38,7 @@ jobs:
           if test -z "$GIT_REF"
           then
             GIT_REF="refs/tags/${{ github.event.inputs.tag }}" &&
-            print $GIT_REF &&
-            test -n "$GIT_REF" ||
-            { echo "No eligible tag found" >&2; exit 1; }
+            print $GIT_REF
           fi &&
           git fetch origin "$GIT_REF" &&
           git switch --detach FETCH_HEAD
