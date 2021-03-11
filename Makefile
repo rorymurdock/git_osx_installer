@@ -30,7 +30,6 @@ ifeq ("$(OSX_VERSION)", "11.0")
 OSX_NAME := Big Sur
 endif
 
-
 OSX_CODE := $(shell echo "$(OSX_NAME)" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
 
 ARCH := Universal
