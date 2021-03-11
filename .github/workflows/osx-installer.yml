@@ -100,6 +100,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          path: osx-installer
           tag_name: v.${{env.VERSION}}
           release_name: Git ${{env.VERSION}}
           body: |
@@ -112,6 +113,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          path: osx-installer
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./git-${{env.VERSION}}-intel-universal-big-sur.pkg
           asset_name: git-${{env.VERSION}}-intel-universal-big-sur.pkg
