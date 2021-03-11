@@ -36,7 +36,8 @@ jobs:
           brew link --force gettext
       - name: Clone git
         run: |
-          git clone -n "${GIT_REPOSITORY:-$FALLBACK_GIT_REPOSITORY}" --branch ${{ github.event.inputs.tag }} git &&
+          git clone -n "${GIT_REPOSITORY:-$FALLBACK_GIT_REPOSITORY}" git &&
+          git checkout ${{ github.event.inputs.tag }} &&
           cd git &&
           if test -z "$GIT_REF"
           then
