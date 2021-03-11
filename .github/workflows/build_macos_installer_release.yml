@@ -1,17 +1,17 @@
-name: osx-installer
+name: Build macOS installer
 
 on:
-  repository_dispatch:
-    types:
-      - osx-installer
   push:
+    branches:
+    - main
+    paths-ignore:
+    - '**/README.md'
 
 env:
   GIT_REPOSITORY: "${{github.event.client_payload.repository}}"
   GIT_REF: "${{github.event.client_payload.ref}}"
   FALLBACK_GIT_REPOSITORY: https://github.com/git/git
 
-  # `gettext` is keg-only
   LDFLAGS: -L/usr/local/opt/gettext/lib
   CFLAGS: -I/usr/local/opt/gettext/include
   # Link with cURL
@@ -105,8 +105,8 @@ jobs:
           body: |
               # Notes
               This is a version of Git created by GitHub Actions.
-          draft: true
-          prerelease: true
+          draft: false
+          prerelease: false
       - name: Upload Package Release Asset
         uses: actions/upload-release-asset@v1
         env:
