@@ -62,7 +62,7 @@ jobs:
           test -n "$VERSION" ||
           die "Could not determine version!"
           export VERSION
-          echo "version=${VERSION}" >> $GITHUB_ENV
+          echo "version=$VERSION" >> $GITHUB_ENV
 
           ln -s git git-$VERSION
 
