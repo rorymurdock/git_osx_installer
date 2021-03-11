@@ -112,9 +112,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          path: osx-installer
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./git-${{env.VERSION}}-intel-universal-big-sur.pkg
+          asset_path: ./osx-installer/git-${{env.VERSION}}-intel-universal-big-sur.pkg
           asset_name: git-${{env.VERSION}}-intel-universal-big-sur.pkg
           asset_content_type: application/x-newton-compatible-pkg
       - name: Upload DMG Release Asset
@@ -124,6 +123,6 @@ jobs:
         with:
           path: osx-installer
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./git-${{env.VERSION}}-intel-universal-big-sur.dmg
+          asset_path: ./osx-installer/git-${{env.VERSION}}-intel-universal-big-sur.dmg
           asset_name: git-${{env.VERSION}}-intel-universal-big-sur.dmg
           asset_content_type: application/x-apple-diskimage
